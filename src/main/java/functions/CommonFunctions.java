@@ -1,9 +1,13 @@
 package functions;
 
+import static utils.PaginaBase.getDriver;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CommonFunctions {
     private WebDriver driver;
@@ -14,7 +18,9 @@ public class CommonFunctions {
 
     /************************** Campos de texto  *****************************/
     public String obterValorNoCampoXpath(String xpathCampo) {
-        return driver.findElement(By.xpath(xpathCampo)).getAttribute("value");
+    	WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+    	WebElement validarCampo = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpathCampo)));
+    	return validarCampo.getAttribute("value");
     }
 
     public void escreveXpath(String xpath, String descricao) {
@@ -23,11 +29,15 @@ public class CommonFunctions {
 
     /************************** Click  *****************************/
     public void clicarBotao(String xpathBotao) {
-        driver.findElement(By.xpath(xpathBotao)).click();
+    	WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+    	WebElement botao = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpathBotao)));
+    	botao.click();
     }
     /************* validacoes ***********************************/
     public String verificaProduto(String texto) {
-        return driver.findElement(By.xpath(texto)).getText();
+    	WebDriverWait wait = new WebDriverWait(getDriver(), 60);
+    	WebElement validacao = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(texto)));
+    	return validacao.getText();
     }
 
 }

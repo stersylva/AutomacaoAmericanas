@@ -3,35 +3,57 @@ package actions;
 import functions.CommonFunctions;
 import org.junit.Assert;
 import tests.TestCesta;
+import tests.pages.CepPage;
 import tests.pages.CestaPage;
+import tests.pages.FiltrarProdutoPage;
+import tests.pages.GarantiaPage;
 
 public class KeepCesta extends TestCesta {
     public static CommonFunctions function;
-    public static CestaPage page;
+    public static FiltrarProdutoPage filtrarProdutoPage;
+    public static CepPage cepPage;
+    public static GarantiaPage garantiaPage;
+    public static CestaPage cestaPage;
+    
 
     public static void filtrarProduto() {
-        page = new CestaPage(getDriver());
+        filtrarProdutoPage = new FiltrarProdutoPage(getDriver());
+        
+        Assert.assertEquals("https://www.americanas.com.br/",  getDriver().getCurrentUrl());
 
-        page.setProdutoCampoPesquisa("PS4");
+        filtrarProdutoPage.setProdutoCampoPesquisa("ps4");
+        
+        Assert.assertEquals("ps4", filtrarProdutoPage.obterValorCampoPesquisa());
+        
+        filtrarProdutoPage.clicarBotaoPesquisa();
+        Assert.assertEquals("https://www.americanas.com.br/busca/ps4",  getDriver().getCurrentUrl());
+        filtrarProdutoPage.clicarProdutoHome();
+                
+    }
+    
+    public static void escolhaCEP() {
+    	cepPage = new CepPage(getDriver());
+    	
+    	cepPage.setCEP("55610280");
+    	
+    	Assert.assertEquals("55610-280", cepPage.verificaCampoCep());
 
-        page.obterValorCampoPesquisa();
-        page.clicarBotaoPesquisa();
-        page.clicarProdutoHome();
-        page.setCEP("55610280");
-        page.clicarBototaoCepOK();
-        page.clicarBotaoComprar();
-
-
+        cepPage.clicarBototaoCepOK();
+        cepPage.clicarBotaoComprar();
     }
 
     public static void escolheGarantia() {
-        page.clicarGarantia();
-        page.clicarBotaoContinuar();
+    	garantiaPage = new GarantiaPage(getDriver());
+    	
+        garantiaPage.clicarGarantia();
+        garantiaPage.clicarBotaoContinuarGarantia();
     }
 
-    public static void resumoPedido() throws InterruptedException {
-        Assert.assertEquals("Console Playstation 4 1 Tb Hits Bundle Edição 5.1 - PS4", page.verificaCesta());
-        page.clicarBotaoContinuar2();
+    public static void resumoPedido() {
+    	cestaPage = new CestaPage(getDriver());
+    	
+        Assert.assertEquals("Console Playstation 4 1 Tb Hits Bundle Edição 5.1 - PS4", cestaPage.verificaCesta());
+        cestaPage.clicarBotaoContinuarCesta();
     }
 
 
